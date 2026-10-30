@@ -1,0 +1,120 @@
+@model TransportViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    List<BookingModel> confirmedBookings = Model.Bookings
+        .Where(booking => booking.Status == BookingStatus.Confirmed)
+        .ToList();
+
+    int dayBookings = confirmedBookings.Count(booking => booking.ShiftId == 1);
+    int nightBookings = confirmedBookings.Count(booking => booking.ShiftId == 2);
+    int overtimeBookings = confirmedBookings.Count(booking => booking.ShiftId == 3);
+    int activeVehicles = confirmedBookings.Select(booking => booking.VehicleId).Distinct().Count();
+    int busCount = Model.Vehicles.Count(vehicle => vehicle.Type == "Bus");
+    int vanCount = Model.Vehicles.Count(vehicle => vehicle.Type == "Van");
+
+    int chartTotal = Math.Max(confirmedBookings.Count, 1);
+    double dayAngle = dayBookings * 360.0 / chartTotal;
+    double nightAngle = (dayBookings + nightBookings) * 360.0 / chartTotal;
+    string dayAngleCss = dayAngle.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    string nightAngleCss = nightAngle.ToString(System.Globalization.CultureInfo.InvariantCulture);
+}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">TRANSPORT OPERATIONS</div>
+        <h1>Dashboard</h1>
+        <p>A clear view of your people, routes and daily transport.</p>
+    </div>
+    <a class="button" asp-action="Create">＋ Book transport</a>
+</div>
+
+<partial name="_Filters" model="Model" />
+
+<div class="stats">
+    <div class="stat">
+        <span>Confirmed bookings <i>↗</i></span>
+        <strong>@confirmedBookings.Count</strong>
+        <small>For @Model.Date.ToString("dd MMM yyyy")</small>
+    </div>
+    <div class="stat">
+        <span>Day shift <i>☀</i></span>
+        <strong>@dayBookings</strong>
+        <small>06:30 departure · 08:00 start</small>
+    </div>
+    <div class="stat">
+        <span>Night shift <i>☾</i></span>
+        <strong>@nightBookings</strong>
+        <small>18:30 departure · 20:00 start</small>
+    </div>
+    <div class="stat">
+        <span>Active vehicles <i>▣</i></span>
+        <strong>@activeVehicles<em>/ @Model.Vehicles.Count</em></strong>
+        <small>@busCount buses · @vanCount vans in fleet</small>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <section class="panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Shift distribution</h2>
+                <p>Confirmed employee bookings</p>
+            </div>
+            <span class="badge blue">TODAY'S VIEW</span>
+        </div>
+
+        <div class="distribution">
+            <div class="donut" style="background:conic-gradient(#234a91 0deg @(dayAngleCss)deg,#4a9dbb @(dayAngleCss)deg @(nightAngleCss)deg,#e7b35f @(nightAngleCss)deg 360deg)">
+                <div>
+                    <strong>@confirmedBookings.Count</strong>
+                    <small>BOOKINGS</small>
+                </div>
+            </div>
+            <div class="legend">
+                <span><i style="background:#234a91"></i>Day shift <b>@dayBookings</b></span>
+                <span><i style="background:#4a9dbb"></i>Night shift <b>@nightBookings</b></span>
+                <span><i style="background:#e7b35f"></i>Overtime <b>@overtimeBookings</b></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Bookings by route</h2>
+                <p>Passenger demand across the network</p>
+            </div>
+            <a asp-action="Map">View route map →</a>
+        </div>
+
+        <div class="route-bars">
+            @foreach (RouteModel route in Model.Routes)
+            {
+                int passengerCount = confirmedBookings.Count(booking => booking.RouteId == route.Id);
+                int barWidth = passengerCount * 100 / chartTotal;
+
+                <div class="bar-label">
+                    <span>@route.Name</span>
+                    <b>@passengerCount <small>employees</small></b>
+                </div>
+                <div class="bar-track">
+                    <div style="width:@(barWidth)%"></div>
+                </div>
+            }
+        </div>
+    </section>
+</div>
+
+<section class="panel">
+    <div class="panel-heading">
+        <div>
+            <h2>Employee bookings</h2>
+            <p>Reservations for @Model.Date.ToString("dddd, dd MMMM yyyy")</p>
+        </div>
+        <a asp-action="Bookings" asp-route-date="@Model.Date.ToString("yyyy-MM-dd")">View all bookings →</a>
+    </div>
+
+    <partial name="_BookingTable" model="Model" />
+</section>

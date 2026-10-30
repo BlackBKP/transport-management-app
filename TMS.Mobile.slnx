@@ -1,0 +1,4 @@
+<Solution>
+    <Project Path="TMS/TMS.csproj" />
+    <Project Path="TMS.Mobile/TMS.Mobile.csproj" />
+</Solution>

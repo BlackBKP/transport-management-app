@@ -1,0 +1,27 @@
+@model TransportViewModel
+
+<form method="get" class="filters">
+    <div>
+        <label for="date">Travel date</label>
+        <input id="date" type="date" name="date" value="@Model.Date.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div>
+        <label for="shiftId">Shift</label>
+        <select id="shiftId" name="shiftId">
+            <option value="">All shifts</option>
+
+            @foreach (ShiftModel shift in Model.Shifts)
+            {
+                <option value="@shift.Id" selected="@(Model.ShiftId == shift.Id)">@shift.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="search">
+        <label for="search">Find employee</label>
+        <input id="search" name="search" value="@Model.Search" placeholder="Search name, ID or department" />
+    </div>
+
+    <button class="button secondary" type="submit">Apply filters</button>
+</form>

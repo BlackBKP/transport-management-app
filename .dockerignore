@@ -1,0 +1,20 @@
+# Keep the container build context limited to the MVC web application.
+**
+!Dockerfile
+!TMS/
+!TMS/**
+
+# Never copy local output, user data or credentials into an image.
+TMS/**/bin/
+TMS/**/obj/
+TMS/**/App_Data/
+TMS/**/*.user
+TMS/**/Properties/PublishProfiles/
+TMS/**/secrets.json
+TMS/**/appsettings.Local.json
+TMS/**/appsettings.*.local.json
+TMS/**/.env*
+TMS/**/*.pfx
+TMS/**/*.p12
+TMS/**/*.pem
+TMS/**/*.key

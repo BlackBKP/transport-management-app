@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TMS.Mobile.MainPage"
+             Title="TMS"
+             BackgroundColor="{AppThemeBinding Light=#F4F6FA, Dark=#111B2B}">
+    <Grid RowDefinitions="Auto,Auto,*">
+        <Grid Padding="16,12" ColumnDefinitions="*,Auto" BackgroundColor="#193A77">
+            <VerticalStackLayout>
+                <Label Text="TMS" TextColor="White" FontSize="22" FontFamily="OpenSansSemibold" />
+                <Label Text="Transportation Management System" TextColor="#C8D7EE" FontSize="11" />
+            </VerticalStackLayout>
+            <Button x:Name="ThemeButton" Grid.Column="1" Text="Theme" Clicked="OnThemeClicked"
+                    SemanticProperties.Description="Switch between light and dark theme" />
+        </Grid>
+
+        <Grid x:Name="BrowserToolbar" Grid.Row="1" IsVisible="False"
+              ColumnDefinitions="*,*,*,*" ColumnSpacing="6" Padding="10,8">
+            <Button Text="Back" Clicked="OnBackClicked" />
+            <Button Grid.Column="1" Text="Home" Clicked="OnHomeClicked" />
+            <Button Grid.Column="2" Text="Reload" Clicked="OnReloadClicked" />
+            <Button Grid.Column="3" Text="Server" Clicked="OnServerClicked" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <ScrollView x:Name="SetupPanel">
+                <VerticalStackLayout Padding="{OnIdiom Phone=24, Tablet=48}" Spacing="20"
+                                     MaximumWidthRequest="580" HorizontalOptions="Center">
+                    <Label Text="Your workspace, on the move." FontSize="28" FontFamily="OpenSansSemibold" />
+                    <Label Text="Connect to your TMS web server. Sign in with the same demo account and use bookings, routes, dashboard and map on your phone or tablet."
+                           FontSize="14" LineBreakMode="WordWrap" />
+                    <Label Text="TMS server address" FontFamily="OpenSansSemibold" />
+                    <Entry x:Name="ServerEntry" Placeholder="https://your-tms-app.azurewebsites.net"
+                           Keyboard="Url" ReturnType="Go" Completed="OnConnectClicked"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#23334C}"
+                           TextColor="{AppThemeBinding Light=#24354C, Dark=#E1E8F3}"
+                           SemanticProperties.Description="Address of the hosted TMS web application" />
+                    <Button Text="Connect to workspace" Clicked="OnConnectClicked" />
+                    <Label x:Name="SetupStatus" IsVisible="False" TextColor="{AppThemeBinding Light=#A33B3B, Dark=#F4A6A6}" />
+                    <Label Text="Use an HTTPS deployment for shared demos. For Android emulator development, use http://10.0.2.2:5014. Your computer must be running the TMS server."
+                           FontSize="12" TextColor="{AppThemeBinding Light=#66768F, Dark=#A0AEC2}" />
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <WebView x:Name="WorkspaceView" IsVisible="False"
+                     Navigating="OnWorkspaceNavigating" Navigated="OnWorkspaceNavigated" />
+
+            <VerticalStackLayout x:Name="ConnectionError" IsVisible="False"
+                                 Padding="24" Spacing="16" VerticalOptions="Center"
+                                 BackgroundColor="{AppThemeBinding Light=#F4F6FA, Dark=#111B2B}">
+                <Label Text="Unable to open your workspace" FontSize="22" />
+                <Label Text="Check your server address, internet connection and whether the TMS server is running." />
+                <Button Text="Try again" Clicked="OnReloadClicked" />
+                <Button Text="Change server" Clicked="OnServerClicked" />
+            </VerticalStackLayout>
+
+            <ActivityIndicator x:Name="LoadingIndicator" IsVisible="False" IsRunning="False"
+                               Color="#557FDB" VerticalOptions="Start" Margin="0,10" />
+        </Grid>
+    </Grid>
+</ContentPage>

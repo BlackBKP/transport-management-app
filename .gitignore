@@ -1,0 +1,73 @@
+# .NET / MAUI generated output
+**/[Bb]in/
+**/[Oo]bj/
+artifacts/
+publish/
+TestResults/
+**/TestResults/
+*.trx
+*.coverage
+*.coveragexml
+*.nupkg
+*.snupkg
+*.apk
+*.aab
+*.ipa
+*.msix
+*.msixbundle
+
+# IDE and per-user settings
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# Local bookings and ASP.NET Data Protection keys
+**/App_Data/
+.test-runs/
+.verification/
+
+# Deployment links, credentials, environment files and signing keys
+.vercel/
+.aws/
+.azure/
+.env
+.env.*
+!.env.example
+!.env.*.example
+**/secrets.json
+**/appsettings.Local.json
+**/appsettings.*.local.json
+**/Properties/PublishProfiles/
+*.pfx
+*.p12
+*.pem
+*.key
+*.keystore
+*.jks
+*.mobileprovision
+
+# Dependency caches
+**/node_modules/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+showcase/dependencies/
+
+# Generated showcase media; keep capture/export scripts and scenes.json
+showcase/screenshots/
+showcase/*.png
+showcase/*.jpg
+showcase/*.jpeg
+showcase/*.mp4
+showcase/*.wav
+showcase/*.zip
+
+# Logs and operating-system files
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini

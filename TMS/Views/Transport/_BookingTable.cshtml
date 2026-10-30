@@ -1,0 +1,64 @@
+@model TransportViewModel
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Route / pickup</th>
+                <th>Shift</th>
+                <th>Vehicle</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (BookingModel booking in Model.Bookings)
+            {
+                RouteModel route = Model.Routes.First(item => item.Id == booking.RouteId);
+                ShiftModel shift = Model.Shifts.First(item => item.Id == booking.ShiftId);
+                VehicleModel vehicle = Model.Vehicles.First(item => item.Id == booking.VehicleId);
+                bool confirmed = booking.Status == BookingStatus.Confirmed;
+
+                <tr>
+                    <td>
+                        <strong>@booking.EmployeeName</strong>
+                        <small>@booking.EmployeeId · @booking.Department</small>
+                    </td>
+                    <td>
+                        @route.Name
+                        <small>@booking.PickupPoint</small>
+                    </td>
+                    <td>
+                        @shift.Name
+                        <small>@shift.Departure departure</small>
+                    </td>
+                    <td>@vehicle.Name</td>
+                    <td>
+                        <span class="badge @(confirmed ? "green" : "gray")">@booking.Status</span>
+                    </td>
+                    <td>
+                        @if (confirmed)
+                        {
+                            <form asp-action="Cancel" method="post" class="cancel-form">
+                                <input type="hidden" name="id" value="@booking.Id" />
+                                <input type="hidden" name="date" value="@booking.TravelDate.ToString("yyyy-MM-dd")" />
+                                <button class="text-button" type="submit">Cancel</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+
+            @if (!Model.Bookings.Any())
+            {
+                <tr>
+                    <td colspan="6" class="empty">
+                        No bookings match these filters.
+                        <a asp-action="Create">Book transport</a> to get started.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

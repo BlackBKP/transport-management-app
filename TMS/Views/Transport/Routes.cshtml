@@ -1,0 +1,34 @@
+@model TransportViewModel
+
+@{
+    ViewData["Title"] = "Routes";
+}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">TRANSPORT NETWORK</div>
+        <h1>Routes & pickup points</h1>
+        <p>Find your connection to the Main campus.</p>
+    </div>
+    <a class="button" asp-action="Map">⌖ View route map</a>
+</div>
+
+<div class="card-grid routes">
+    @foreach (RouteModel route in Model.Routes)
+    {
+        <section class="panel directory-card">
+            <span class="badge blue">@route.DistanceKm km</span>
+            <h2>@route.Name</h2>
+            <p>Inbound to Main campus</p>
+
+            <ol class="stop-list">
+                @foreach (string stop in route.Stops)
+                {
+                    <li>@stop</li>
+                }
+            </ol>
+
+            <a asp-action="Create">Book this journey →</a>
+        </section>
+    }
+</div>

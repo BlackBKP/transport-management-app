@@ -1,0 +1,130 @@
+@model TransportViewModel
+
+@{
+    ViewData["Title"] = "Book transport";
+    BookingModel booking = Model.Form;
+    string minimumTravelDate = TMS.Services.TransportService.Today.ToString("yyyy-MM-dd");
+}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">NEW RESERVATION</div>
+        <h1>Book transport</h1>
+        <p>Choose a route, shift and vehicle for your next journey.</p>
+    </div>
+    <a class="button secondary" asp-action="Bookings">← Back to bookings</a>
+</div>
+
+<div class="booking-grid">
+    <section class="panel booking-panel">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="validation" role="alert"></div>
+
+            <h2><span class="step">1</span> Employee details</h2>
+
+            <div class="form-grid">
+                <div>
+                    <label for="employeeId">Employee ID</label>
+                    <input id="employeeId" name="employeeId" value="@booking.EmployeeId"
+                           required maxlength="30" placeholder="e.g. EMP0031" />
+                </div>
+                <div>
+                    <label for="employeeName">Employee name</label>
+                    <input id="employeeName" name="employeeName" value="@booking.EmployeeName"
+                           required maxlength="100" placeholder="Full name" />
+                </div>
+                <div class="full">
+                    <label for="department">Department</label>
+                    <input id="department" name="department" value="@booking.Department"
+                           required maxlength="60" placeholder="e.g. Production" />
+                </div>
+            </div>
+
+            <h2><span class="step">2</span> Journey details</h2>
+
+            <div class="form-grid">
+                <div>
+                    <label for="travelDate">Travel date</label>
+                    <input id="travelDate" name="travelDate" type="date" min="@minimumTravelDate"
+                           value="@booking.TravelDate.ToString("yyyy-MM-dd")" required />
+                </div>
+                <div>
+                    <label for="shiftId">Shift</label>
+                    <select id="shiftId" name="shiftId" required>
+                        <option value="">Select a shift</option>
+
+                        @foreach (ShiftModel shift in Model.Shifts)
+                        {
+                            <option value="@shift.Id" selected="@(booking.ShiftId == shift.Id)">
+                                @shift.Name · @shift.Departure
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label for="routeId">Route</label>
+                    <select id="routeId" name="routeId" required>
+                        <option value="">Select a route</option>
+
+                        @foreach (RouteModel route in Model.Routes)
+                        {
+                            <option value="@route.Id" selected="@(booking.RouteId == route.Id)">@route.Name</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label for="pickupPoint">Pickup point</label>
+                    <select id="pickupPoint" name="pickupPoint" data-selected="@booking.PickupPoint" required>
+                        <option value="">Select a route first</option>
+                    </select>
+                </div>
+                <div class="full">
+                    <label for="vehicleId">Vehicle</label>
+                    <select id="vehicleId" name="vehicleId" required>
+                        <option value="">Select a vehicle</option>
+
+                        @foreach (VehicleModel vehicle in Model.Vehicles)
+                        {
+                            <option value="@vehicle.Id" selected="@(booking.VehicleId == vehicle.Id)">
+                                @vehicle.Name · @vehicle.Plate · @vehicle.Capacity seats
+                            </option>
+                        }
+                    </select>
+                    <small>Availability is checked when you confirm your booking.</small>
+                </div>
+                <div class="full">
+                    <label for="notes">Notes <span class="muted">(optional)</span></label>
+                    <textarea id="notes" name="notes" maxlength="300" rows="3"
+                              placeholder="Anything the transport coordinator should know">@booking.Notes</textarea>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <span>One seat per employee, per shift.</span>
+                <button class="button" type="submit">Confirm booking →</button>
+            </div>
+        </form>
+    </section>
+
+    <aside class="panel journey-help">
+        <div class="eyebrow">YOUR DAILY JOURNEY</div>
+        <h2>A seat. A route.<br />A smoother commute.</h2>
+
+        <div class="journey-art">
+            ▣
+            <span>● ─ ─ ─ ● ─ ─ ─ ●</span>
+        </div>
+
+        <p>Reserve transport to the Main campus with a few simple details.</p>
+        <hr />
+        <h3>Before you book</h3>
+        <p>Check your shift and pickup point. Each vehicle serves one route for a given shift.</p>
+        <p>Need to change plans? Cancel your booking and make a new reservation.</p>
+        <span class="badge blue">DEMO · SIGNED-IN WORKSPACE</span>
+    </aside>
+</div>
+
+<script id="route-data" type="application/json">
+    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Routes))
+</script>
+

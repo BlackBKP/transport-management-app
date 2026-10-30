@@ -1,0 +1,73 @@
+@model TransportViewModel
+
+@{
+    ViewData["Title"] = "Route map";
+}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">TRANSPORT NETWORK</div>
+        <h1>Route map</h1>
+        <p>Explore the routes and pickup points around Bangkok and Samut Prakan, connecting to Main campus in Bang Phli.</p>
+    </div>
+    <a class="button" asp-action="Create">＋ Book transport</a>
+</div>
+
+<div class="map-grid">
+    <section class="panel map-sidebar">
+        <div class="panel-heading">
+            <h2>Choose a route</h2>
+            <button id="show-all-routes" class="text-button" type="button">Show all</button>
+        </div>
+
+        <div class="map-route-list">
+            @foreach (RouteModel route in Model.Routes)
+            {
+                <button class="map-route" type="button" data-route-id="@route.Id" aria-pressed="false">
+                    <span class="route-dot route-color-@route.Id"></span>
+                    <span>
+                        <strong>@route.Name</strong>
+                        <small>@route.Stops.Length stops · @route.DistanceKm km (sample)</small>
+                    </span>
+                    <span>→</span>
+                </button>
+            }
+        </div>
+
+        <div class="map-details" aria-live="polite">
+            <h2 id="map-route-name">All routes</h2>
+            <p id="map-route-description">Select a route to see its pickup points.</p>
+            <ol id="map-stops" class="stop-list"></ol>
+            <a class="button secondary" asp-action="Create">Book transport</a>
+        </div>
+    </section>
+
+    <section class="panel map-panel">
+        <div class="panel-heading">
+            <h2>Bangkok & Samut Prakan network</h2>
+            <button id="fit-map" class="button secondary" type="button">Fit routes</button>
+        </div>
+
+        <div id="route-map" class="route-map" aria-label="Interactive map showing sample transport routes">
+            <div class="map-loading" id="map-loading">Loading map…</div>
+        </div>
+
+        <p id="map-status" class="map-note" role="status">
+            Illustrative pickup coordinates and straight-line connections.
+            These are sample routes, not driving directions.
+        </p>
+    </section>
+</div>
+
+<script id="map-data" type="application/json">
+    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Routes))
+</script>
+
+@section Scripts
+{
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="~/js/route-map.js" asp-append-version="true"></script>
+}

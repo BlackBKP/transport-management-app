@@ -1,0 +1,94 @@
+@{
+    string? currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+    var navigationItems = new[]
+    {
+        (Action: "Index", Icon: "◫", Label: "Dashboard"),
+        (Action: "Bookings", Icon: "▤", Label: "Employee bookings"),
+        (Action: "Create", Icon: "＋", Label: "Book transport"),
+        (Action: "Vehicles", Icon: "▣", Label: "Vehicles"),
+        (Action: "Routes", Icon: "⌁", Label: "Routes & pickup points"),
+        (Action: "Map", Icon: "⌖", Label: "Route map"),
+        (Action: "Shifts", Icon: "◷", Label: "Shifts")
+    };
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <partial name="_AppIcons" />
+    <title>@ViewData["Title"] · TMS · Transportation Management System</title>
+    <script src="~/js/theme.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <aside id="main-navigation" class="sidebar">
+        <a class="brand" href="/">
+            <span class="brand-symbol">T</span>
+            <span>TMS<small>TRANSPORT MANAGEMENT</small></span>
+        </a>
+
+        <div class="workspace">DEMO WORKSPACE <span>PROTOTYPE</span></div>
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav>
+            @foreach (var item in navigationItems)
+            {
+                string activeClass = currentAction == item.Action ? "active" : string.Empty;
+
+                <a class="@activeClass" asp-controller="Transport" asp-action="@item.Action">
+                    <span>@item.Icon</span>
+                    @item.Label
+                </a>
+            }
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="avatar">TC</div>
+            <div>@User.Identity?.Name<small>Demo workspace</small></div>
+        </div>
+    </aside>
+
+    <div class="shell">
+        <header>
+            <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-controls="main-navigation" aria-expanded="false">☰</button>
+            <span class="header-title">Transportation Management System</span>
+
+            <div class="header-right">
+                <button id="theme-toggle" class="theme-toggle" type="button"
+                        aria-label="Switch to dark theme" aria-pressed="false">
+                    ☾ Dark
+                </button>
+                <span class="live-dot"></span>
+                <span class="signed-in-user">@User.Identity?.Name</span>
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button class="theme-toggle" type="submit">Sign out</button>
+                </form>
+            </div>
+        </header>
+
+        <main>
+            @if (TempData["Message"] is string message)
+            {
+                <div class="notice" role="status">@message</div>
+            }
+
+            @RenderBody()
+        </main>
+
+        <footer>
+            <span>TMS · Transportation Management System</span>
+            <span>Prototype · Sample data · Thailand time (UTC+7)</span>
+        </footer>
+    </div>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,25 @@
+@model TransportViewModel
+
+@{
+    ViewData["Title"] = "Employee bookings";
+}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">RESERVATIONS</div>
+        <h1>Employee bookings</h1>
+        <p>Manage employee transport by date, route and shift.</p>
+    </div>
+    <a class="button" asp-action="Create">＋ Book transport</a>
+</div>
+
+<partial name="_Filters" model="Model" />
+
+<section class="panel">
+    <div class="panel-heading">
+        <h2>@Model.Bookings.Count bookings</h2>
+        <span class="badge blue">@Model.Date.ToString("dd MMM yyyy")</span>
+    </div>
+
+    <partial name="_BookingTable" model="Model" />
+</section>

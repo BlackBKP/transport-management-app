@@ -1,0 +1,36 @@
+@model TransportViewModel
+
+@{
+    ViewData["Title"] = "Shifts";
+}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">DAILY SCHEDULE</div>
+        <h1>Shifts</h1>
+        <p>Plan your commute around your working hours.</p>
+    </div>
+    <a class="button" asp-action="Create">＋ Book transport</a>
+</div>
+
+<div class="card-grid">
+    @foreach (ShiftModel shift in Model.Shifts)
+    {
+        <section class="panel directory-card">
+            <div class="vehicle-icon">◷</div>
+            <h2>@shift.Name</h2>
+            <p>Regular transport schedule</p>
+
+            <dl>
+                <dt>Pickup departure</dt>
+                <dd>@shift.Departure</dd>
+                <dt>Working hours</dt>
+                <dd>@shift.WorkHours</dd>
+                <dt>Service</dt>
+                <dd>Bus & van</dd>
+            </dl>
+
+            <a asp-action="Create">Book for this shift →</a>
+        </section>
+    }
+</div>

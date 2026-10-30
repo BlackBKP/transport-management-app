@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TMS.Mobile.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#24354C, Dark=#E1E8F3}" />
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#2858A4" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="MinimumHeightRequest" Value="44" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

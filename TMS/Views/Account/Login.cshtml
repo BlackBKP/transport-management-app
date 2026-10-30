@@ -1,0 +1,80 @@
+@model LoginModel
+
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Sign in";
+}
+
+<section class="login-story">
+    <a class="brand" href="/Account/Login">
+        <span class="brand-symbol">T</span>
+        <span>TMS<small>TRANSPORT MANAGEMENT</small></span>
+    </a>
+
+    <div class="login-story-copy">
+        <div class="eyebrow">YOUR DAILY JOURNEY, SIMPLIFIED</div>
+        <h1>Every journey.<br />One workspace.</h1>
+        <p>Plan your commute, find your route and reserve a seat. Keep your transport moving from one clear dashboard.</p>
+        <div class="login-network" aria-hidden="true">
+            <span>Bangkok</span>
+            <i>● ─────── ● ─────── ●</i>
+            <span>Samut Prakan</span>
+        </div>
+    </div>
+
+    <small>Transportation Management System · Demo workspace</small>
+</section>
+
+<section class="login-side">
+    <div class="login-tools">
+        <span class="badge blue">PROTOTYPE</span>
+        <button id="theme-toggle" class="theme-toggle" type="button"
+                aria-label="Switch to dark theme" aria-pressed="false">☾ Dark</button>
+    </div>
+
+    <div class="login-card">
+        <div class="eyebrow">WELCOME TO TMS</div>
+        <h2>Sign in to your workspace</h2>
+        <p>Enter your account details to continue.</p>
+
+        <form asp-controller="Account" asp-action="Login" method="post" class="login-form">
+            <div asp-validation-summary="All" class="validation" role="alert"></div>
+            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+
+            <div>
+                <label for="userName">Username</label>
+                <input id="userName" name="userName" value="@Model.UserName" type="text"
+                       autocomplete="username" autocapitalize="none" spellcheck="false"
+                       placeholder="Your username" required maxlength="60" autofocus />
+            </div>
+
+            <div>
+                <label for="password">Password</label>
+                <div class="password-control">
+                    <input id="password" name="password" type="password" autocomplete="current-password"
+                           placeholder="Your password" required maxlength="100" />
+                    <button id="password-toggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+                </div>
+            </div>
+
+            <label class="remember-control">
+                <input name="rememberMe" type="checkbox" value="true" checked="@Model.RememberMe" />
+                Keep me signed in
+            </label>
+
+            <button class="button login-submit" type="submit">Sign in →</button>
+        </form>
+
+        <div class="login-demo-note">
+            <strong>Demo workspace</strong>
+            <p>Use the demo account provided by your presenter. Bookings are shared sample data.</p>
+        </div>
+    </div>
+
+    <small class="login-footer">TMS · Transportation Management System</small>
+</section>
+
+@section Scripts
+{
+    <script src="~/js/login.js" asp-append-version="true"></script>
+}

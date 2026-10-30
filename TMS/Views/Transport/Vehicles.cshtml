@@ -1,0 +1,37 @@
+@model TransportViewModel
+
+@{
+    ViewData["Title"] = "Vehicles";
+}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">FLEET DIRECTORY</div>
+        <h1>Vehicles</h1>
+        <p>Meet the fleet that keeps TMS moving.</p>
+    </div>
+    <a class="button" asp-action="Create">＋ Book transport</a>
+</div>
+
+<div class="card-grid">
+    @foreach (VehicleModel vehicle in Model.Vehicles)
+    {
+        <section class="panel directory-card">
+            <div class="vehicle-icon">▣</div>
+            <span class="badge blue">@vehicle.Type</span>
+            <h2>@vehicle.Name</h2>
+            <p>@vehicle.Plate</p>
+
+            <dl>
+                <dt>Passenger capacity</dt>
+                <dd>@vehicle.Capacity seats</dd>
+                <dt>Driver</dt>
+                <dd>@vehicle.Driver</dd>
+                <dt>Supplier</dt>
+                <dd>Demo transport partner</dd>
+            </dl>
+
+            <a asp-action="Create">Reserve a seat →</a>
+        </section>
+    }
+</div>
