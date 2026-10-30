@@ -53,3 +53,17 @@ The web Release publish, Git ignore rules, icon assets and existing HTTP regress
 The web favicon, PNG shortcut icons and Apple touch icon use the same navy-and-white T mark as the MAUI Android/iOS launcher icon.
 Both the login and authenticated layouts include the shared _AppIcons partial.
 The web manifest provides shortcut metadata; it does not add offline booking support.
+
+## Vercel NOT_FOUND after a successful three-second deployment
+A deployment that finishes immediately and returns Vercel NOT_FOUND may have used the Other/static preset without building the .NET container.
+The root vercel.json pins framework to container and supplies the non-secret runtime environment settings. It overrides the dashboard's framework selection.
+
+After pulling this configuration:
+1. Keep Root Directory at the repository root (./).
+2. Confirm the new deployment uses the commit containing vercel.json.
+3. If no new deployment starts automatically, choose Redeploy and use the latest commit.
+4. Open build logs and confirm the dotnet SDK image, dotnet restore and dotnet publish steps run.
+5. If Vercel reports an unsupported framework or unavailable Container feature, inspect that build error before retrying. Do not use the Other/static preset for this MVC app.
+6. If the image builds but startup fails, inspect runtime logs. A port or storage error is a separate issue from an empty static deployment.
+
+Reference: https://vercel.com/docs/project-configuration/vercel-json#framework
