@@ -115,6 +115,14 @@ try {
     Assert-Condition ($invalidLogin.Content -match 'username or password is incorrect') 'Invalid credentials accepted.'
     Assert-Condition ($invalidLogin.Content -notmatch 'value="invalid"') 'Password echoed into HTML.'
 
+    $unknownUser = Send-Form '/Account/Login' @{
+        __RequestVerificationToken = $token
+        userName = 'unknown-demo-user'
+        password = 'P@ssw0rd'
+    } $session
+    Assert-Condition ($unknownUser.Content -match 'username or password is incorrect') 'Unknown demo user was accepted.'
+
+
     $missingToken = Send-Form '/Account/Login' @{ userName = 'user'; password = 'P@ssword' } $session
     Assert-Condition ($missingToken.StatusCode -eq 200 -and $missingToken.Content -match 'Your sign-in form expired') 'Missing form token did not recover to login.'
     Assert-Condition ($missingToken.Content -match 'id="userName"' -and $missingToken.Content -notmatch '<h1>Dashboard</h1>') 'Rejected login was authenticated.'

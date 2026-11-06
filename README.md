@@ -49,6 +49,7 @@ The login screen is /Account/Login. All transport screens and booking actions re
 | korakod.p | P@ssw0rd |
 
 Passwords are case-sensitive. Usernames are case-insensitive.
+The server verifies these fixed demo accounts against stored salted PBKDF2 hashes. No user database or registration service is required.
 The login page supports Show/Hide password, Keep me signed in, validation messages and light/dark mode.
 The theme preference is shared across login and workspace pages in the same browser.
 Use Sign out in the header to end a session.

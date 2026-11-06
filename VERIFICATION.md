@@ -42,3 +42,9 @@ The MAUI companion requires a running web server; there is no offline booking sy
 - Booking/cancellation anti-forgery enforcement remains unchanged.
 - Web build and the full isolated HTTP regression check passed.
 - Shared/durable key storage is still required to prevent token invalidation across container restarts or multiple instances.
+
+## Fixed demo password hashes — 6 November 2026
+- DemoAuthenticationService now stores salted PBKDF2 hashes instead of generating hashes from seed passwords at each startup.
+- No user database, account registration or external authentication service was added.
+- Both requested accounts, incorrect passwords and an unknown username are covered by the HTTP regression checks.
+- Browser authentication still uses the existing cookie; this password simplification does not change the container key-storage limitations.
