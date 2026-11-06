@@ -33,3 +33,12 @@ The MAUI companion requires a running web server; there is no offline booking sy
 - Release publish and the full web regression check passed after these changes.
 - Docker is not installed here; the container image and Vercel deployment remain unverified.
 - Container storage is temporary and does not provide durable/shared bookings or authentication keys.
+
+## Login form recovery — 6 November 2026
+- Three fresh live sign-in attempts using korakod.p succeeded before the change; the screenshot failure was not reproducible with a newly generated form.
+- The bare 400 is consistent with an expired/mismatched anti-forgery token, potentially caused by temporary per-instance encryption keys.
+- Added login-only recovery to a fresh form with a message; rejected credentials are not replayed.
+- Verified missing, invalid and cross-session form tokens cannot authenticate, then verified successful login using a fresh token.
+- Booking/cancellation anti-forgery enforcement remains unchanged.
+- Web build and the full isolated HTTP regression check passed.
+- Shared/durable key storage is still required to prevent token invalidation across container restarts or multiple instances.

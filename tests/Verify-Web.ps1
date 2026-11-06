@@ -116,7 +116,29 @@ try {
     Assert-Condition ($invalidLogin.Content -notmatch 'value="invalid"') 'Password echoed into HTML.'
 
     $missingToken = Send-Form '/Account/Login' @{ userName = 'user'; password = 'P@ssword' } $session
-    Assert-Condition ($missingToken.StatusCode -eq 400) 'Login accepted a missing anti-forgery token.'
+    Assert-Condition ($missingToken.StatusCode -eq 200 -and $missingToken.Content -match 'Your sign-in form expired') 'Missing form token did not recover to login.'
+    Assert-Condition ($missingToken.Content -match 'id="userName"' -and $missingToken.Content -notmatch '<h1>Dashboard</h1>') 'Rejected login was authenticated.'
+
+    $invalidToken = Send-Form '/Account/Login' @{
+        __RequestVerificationToken = 'invalid-token'
+        userName = 'korakod.p'
+        password = 'P@ssw0rd'
+    } $session
+    Assert-Condition ($invalidToken.Content -match 'Your sign-in form expired') 'Invalid form token did not recover.'
+    Assert-Condition ($invalidToken.Content -notmatch 'value="P@ssw0rd"') 'Rejected password was reflected in the response.'
+
+    $foreignLoginPage = Invoke-WebRequest "$baseUrl/Account/Login" -SessionVariable foreignSession
+    $foreignToken = Get-CsrfToken $foreignLoginPage.Content
+    $mismatchedToken = Send-Form '/Account/Login' @{
+        __RequestVerificationToken = $foreignToken
+        userName = 'korakod.p'
+        password = 'P@ssw0rd'
+    } $session
+    Assert-Condition ($mismatchedToken.Content -match 'Your sign-in form expired') 'A token from another session was accepted.'
+
+    # The rejected POST was not replayed. A fresh form must be submitted explicitly.
+    $recoveredLogin = Get-Response '/Account/Login' $session
+    $token = Get-CsrfToken $recoveredLogin.Content
 
     $login = Send-Form '/Account/Login' @{
         __RequestVerificationToken = $token

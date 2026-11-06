@@ -37,6 +37,11 @@
         <h2>Sign in to your workspace</h2>
         <p>Enter your account details to continue.</p>
 
+        @if (ViewData["SignInNotice"] is string signInNotice)
+        {
+            <div class="notice login-session-notice" role="alert">@signInNotice</div>
+        }
+
         <form asp-controller="Account" asp-action="Login" method="post" class="login-form">
             <div asp-validation-summary="All" class="validation" role="alert"></div>
             <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />

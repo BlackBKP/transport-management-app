@@ -211,3 +211,9 @@
     }
 
 }
+
+.login-session-notice {
+    margin-top: 22px;
+    margin-bottom: 0;
+    font-size: 12px;
+}

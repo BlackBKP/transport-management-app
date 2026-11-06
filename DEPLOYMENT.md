@@ -67,3 +67,12 @@ After pulling this configuration:
 6. If the image builds but startup fails, inspect runtime logs. A port or storage error is a separate issue from an empty static deployment.
 
 Reference: https://vercel.com/docs/project-configuration/vercel-json#framework
+
+## HTTP 400 immediately after submitting login
+A wrong password normally redisplays the login form with a validation message. A bare 400 at /Account/Login can occur before credential validation when the form's anti-forgery token cannot be validated.
+
+The current deployment stores its Data Protection keys in temporary /tmp storage. A form left open across a redeployment, instance restart or instance change can therefore become invalid.
+Open /Account/Login in a new tab and submit the newly generated form; do not refresh the failed POST or keep resubmitting the old tab.
+
+LoginAntiforgeryRecoveryFilter now converts only a rejected sign-in form into a redirect to a fresh login form with an explanatory message. It does not authenticate the rejected request, replay a password or disable CSRF protection. Booking/cancellation checks remain unchanged.
+This is user-facing recovery, not durable shared key storage. If fresh forms repeatedly fail, inspect runtime logs for the sign-in token warning and Data Protection/key-ring errors. A stable multi-instance deployment still requires a shared Data Protection key repository.

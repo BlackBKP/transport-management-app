@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TMS.Filters;
 using TMS.Interfaces;
 using TMS.Models;
 
@@ -20,11 +21,17 @@ namespace TMS.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public IActionResult Login(string? returnUrl = null)
+        public IActionResult Login(string? returnUrl = null, bool formExpired = false)
         {
             if (User.Identity?.IsAuthenticated == true)
             {
                 return RedirectToLocalPage(returnUrl);
+            }
+
+            if (formExpired)
+            {
+                ViewData["SignInNotice"] =
+                    "Your sign-in form expired. Please enter your details again.";
             }
 
             return View(new LoginModel { ReturnUrl = returnUrl });
@@ -33,6 +40,7 @@ namespace TMS.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [TypeFilter(typeof(LoginAntiforgeryRecoveryFilter))]
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> Login(LoginModel model)
         {
