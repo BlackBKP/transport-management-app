@@ -123,7 +123,7 @@ try {
     Assert-Condition ($unknownUser.Content -match 'username or password is incorrect') 'Unknown demo user was accepted.'
 
 
-    $missingToken = Send-Form '/Account/Login' @{ userName = 'user'; password = 'P@ssword' } $session
+    $missingToken = Send-Form '/Account/Login' @{ userName = 'user'; password = 'P@ssw0rd' } $session
     Assert-Condition ($missingToken.StatusCode -eq 200 -and $missingToken.Content -match 'Your sign-in form expired') 'Missing form token did not recover to login.'
     Assert-Condition ($missingToken.Content -match 'id="userName"' -and $missingToken.Content -notmatch '<h1>Dashboard</h1>') 'Rejected login was authenticated.'
 
@@ -151,7 +151,7 @@ try {
     $login = Send-Form '/Account/Login' @{
         __RequestVerificationToken = $token
         userName = 'user'
-        password = 'P@ssword'
+        password = 'P@ssw0rd'
         returnUrl = 'https://example.com'
     } $session
     Assert-Condition ($login.Content -match '<h1>Dashboard</h1>') 'Valid login failed or external redirect followed.'

@@ -7,7 +7,7 @@ namespace TMS.Services
     public class DemoAuthenticationService : IDemoAuthenticationService
     {
         private const string UserPasswordHash =
-            "AQAAAAIAAYagAAAAEEhqdHWUCHd9zfSOFi6uktn+d6CGE8Q9ong4kUlz0h+o33mYEHmQk4p4ZymtpdpkNQ==";
+            "AQAAAAIAAYagAAAAENl25s8Mf/XZyiqX2sZTtHamFSDF7Kjg9wiiSPbxtOm7DT53q+l0XPWw7eLd+qmfeg==";
 
         private const string KorakodPasswordHash =
             "AQAAAAIAAYagAAAAEOIdE0fB0WxDGkyYx9BH1+Pr+57+uYLSYo33xaG7tIznzXmgIYa7lSjxF+xm2YPnBg==";

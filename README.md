@@ -45,7 +45,7 @@ The login screen is /Account/Login. All transport screens and booking actions re
 
 | Username | Password |
 | --- | --- |
-| user | P@ssword |
+| user | P@ssw0rd |
 | korakod.p | P@ssw0rd |
 
 Passwords are case-sensitive. Usernames are case-insensitive.

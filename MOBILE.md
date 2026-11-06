@@ -14,7 +14,7 @@ Install it on an Android 7.0+ phone or tablet for internal demo use. This packag
 1. Start the MVC web project or deploy it to an HTTPS host.
 2. Open TMS on your device and enter the root server URL.
 3. Tap Connect to workspace.
-4. Sign in using user / P@ssword or korakod.p / P@ssw0rd.
+4. Sign in using user / P@ssw0rd or korakod.p / P@ssw0rd.
 
 The URL setting is remembered. Passwords stay in the web login form and are not saved by the native app.
 Both accounts share the same demo bookings. Use the web Sign out button to end the session.
